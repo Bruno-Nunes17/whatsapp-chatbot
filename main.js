@@ -1,5 +1,7 @@
 const { Client, LocalAuth } = require("whatsapp-web.js");
+const Gemini = require("./src/gemini");
 const qrcode = require("qrcode-terminal");
+require("dotenv").config();
 
 const client = new Client({
   webVersionCache: {
@@ -10,6 +12,8 @@ const client = new Client({
   authStrategy: new LocalAuth(),
 });
 
+const gemini = new Gemini();
+
 client.on("qr", (qr) => {
   qrcode.generate(qr, { small: true });
 });
@@ -18,9 +22,10 @@ client.on("ready", () => {
   console.log("Client is ready!");
 });
 
-client.on("message_create", (message) => {
-  if (message.body === "!ping") {
-    message.reply("pong");
+client.on("message", async (message) => {
+  if (message.body.toLowerCase().includes("gemini")) {
+    await gemini.run(message.body);
+    message.reply(gemini.response);
   }
 });
 
