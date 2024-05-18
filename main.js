@@ -19,12 +19,6 @@ client.on("ready", () => {
 });
 
 client.on("message_create", (message) => {
-  console.log(message.body);
-  if (message.from === "557598263520@c.us") {
-    if (message.body === "oi" || message.body === "Oi") {
-      message.reply("oi, tudo bem?");
-    }
-  }
   if (message.body === "!ping") {
     message.reply("pong");
   }
